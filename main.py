@@ -1,7 +1,7 @@
 import requests
 from datetime import datetime
 import telebot
-from auth_data import token
+from auth import token
 # парсинг с сайта: https://www.yobit.net/ru/api/
 
 
@@ -38,13 +38,23 @@ def telegram_bot(token):
                 print(response)
                 high_price = response['btc_usd']['high']
                 low_price = response['btc_usd']['low']
+                avg_price = response['btc_usd']['avg']
+                vol_trade = response['btc_usd']['vol']
+                vol_cur_trade = response['btc_usd']['vol_cur']
+                last_price = response['btc_usd']['last']
+                updated_cache = response['btc_usd']['updated']
                 bot.send_message(
                     message.chat.id,
                     "Статистика за последние 24 часа:\n"
                     "Дата: "
                     f"{datetime.now().strftime('%d.%m.%Y %H:%M')}\n"
                     f"Максимальная цена: {'%.2f' % high_price} USD\n"
-                    f"Минимальная цена: {'%.2f' % low_price} USD")
+                    f"Минимальная цена: {'%.2f' % low_price} USD\n"
+                    f"Средняя цена: {'%.2f' % avg_price} USD\n"
+                    f"Объем торгов: {'%.2f' % vol_trade}\n"
+                    f"Объем торгов в валюте: {'%.2f' % vol_cur_trade} USD\n"
+                    f"Цена последней сделки: {'%.2f' % last_price} USD\n"
+                    f"Последнее обновление кэша: {'%.2f' % updated_cache}")
             except Exception as ex:
                 print(ex)
                 bot.send_message(

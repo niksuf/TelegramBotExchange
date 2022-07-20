@@ -4,7 +4,7 @@
 Данный телеграм-бот является парсером с сайта ```https://www.yobit.net/```. Парсинг происходит посредством открытого API данной биржи. Бот может показать текущую 
 стоимость покупки/продажи BTC в USD, а так же статистику за последние 24 часа. Структура ```*.json``` файла приведена ниже.
 
-![json_format](https://github.com/niksuf/TelegramBotVPS/blob/master/json_format.png)
+![json_format](https://github.com/niksuf/TelegramBotVPS/blob/master/img/json_format.png)
 
 ## Команды бота
 

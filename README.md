@@ -16,7 +16,7 @@
 ## Запуск бота
 
 1. Скачать репозиторий к себе на компьютер при помощи команды:
-```git clone https://github.com/niksuf/ArduinoFFT```
+```git clone https://github.com/niksuf/TelegramBotExchange```
 2. Зарегестрировать нового бота в телеграм при помощи бота ```https://t.me/BotFather```.
 3. В файл ```auth.py``` прописать токен бота.
 4. Запустить ```main.py```.

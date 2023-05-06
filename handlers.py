@@ -3,20 +3,25 @@ from aiogram.dispatcher.filters import Text
 import requests
 from datetime import datetime
 from main import bot, dp
+from keyboards import kb
 
 
 @dp.message_handler(commands=['start'])
 async def start_msg(message: types.Message):
-    await bot.send_message(message.chat.id, 'Привет! Напиши /help, чтобы узнать функции бота!')
+    await message.answer(text='Привет! Напиши /help, чтобы узнать функции бота!',
+                         parse_mode='HTML',
+                         reply_markup=kb)
 
 
+@dp.message_handler(Text(equals='Помощь'))
 @dp.message_handler(commands=['help'])
 async def help_msg(message: types.Message):
     await bot.send_message(message.chat.id, "Функции бота:\n"
-                "/price - цена покупки и продажи BTC\n"
-                "/statistics - статистика за последние 24 часа")
+                                            "/price - цена покупки и продажи BTC\n"
+                                            "/statistics - статистика за последние 24 часа")
 
 
+@dp.message_handler(Text(equals='Цена'))
 @dp.message_handler(commands=['price'])
 async def price_msg(message: types.Message):
     try:
@@ -26,15 +31,16 @@ async def price_msg(message: types.Message):
         sell_price = response['btc_usd']['sell']
         buy_price = response['btc_usd']['buy']
         await bot.send_message(message.chat.id,
-            "Дата: "
-            f"{datetime.now().strftime('%d.%m.%Y %H:%M')}\nЦена продажи 1 BTC: {'%.2f' % sell_price} USD\n"
-            f"Цена покупки 1 BTC: {'%.2f' % buy_price} USD")
+                               "Дата: "
+                               f"{datetime.now().strftime('%d.%m.%Y %H:%M')}\nЦена продажи 1 BTC: {'%.2f' % sell_price} USD\n"
+                               f"Цена покупки 1 BTC: {'%.2f' % buy_price} USD")
     except Exception as ex:
         print(ex)
         await bot.send_message(message.chat.id,
-            'Что-то пошло не так, попробуйте позже...')
+                               'Что-то пошло не так, попробуйте позже...')
 
 
+@dp.message_handler(Text(equals='Статистика'))
 @dp.message_handler(commands=['statistics'])
 async def statistics_msg(message: types.Message):
     try:
@@ -49,23 +55,23 @@ async def statistics_msg(message: types.Message):
         last_price = response['btc_usd']['last']
         updated_cache = response['btc_usd']['updated']
         await bot.send_message(message.chat.id,
-            "Статистика за последние 24 часа:\n"
-            "Дата: "
-            f"{datetime.now().strftime('%d.%m.%Y %H:%M')}\n"
-            f"Максимальная цена: {'%.2f' % high_price} USD\n"
-            f"Минимальная цена: {'%.2f' % low_price} USD\n"
-            f"Средняя цена: {'%.2f' % avg_price} USD\n"
-            f"Объем торгов: {'%.2f' % vol_trade}\n"
-            f"Объем торгов в валюте: {'%.2f' % vol_cur_trade} USD\n"
-            f"Цена последней сделки: {'%.2f' % last_price} USD\n"
-            f"Последнее обновление кэша: {'%.2f' % updated_cache}")
+                               "Статистика за последние 24 часа:\n"
+                               "Дата: "
+                               f"{datetime.now().strftime('%d.%m.%Y %H:%M')}\n"
+                               f"Максимальная цена: {'%.2f' % high_price} USD\n"
+                               f"Минимальная цена: {'%.2f' % low_price} USD\n"
+                               f"Средняя цена: {'%.2f' % avg_price} USD\n"
+                               f"Объем торгов: {'%.2f' % vol_trade}\n"
+                               f"Объем торгов в валюте: {'%.2f' % vol_cur_trade} USD\n"
+                               f"Цена последней сделки: {'%.2f' % last_price} USD\n"
+                               f"Последнее обновление кэша: {'%.2f' % updated_cache}")
     except Exception as ex:
         print(ex)
         await bot.send_message(message.chat.id,
-            'Что-то пошло не так, попробуйте позже...')
+                               'Что-то пошло не так, попробуйте позже...')
 
 
 @dp.message_handler(Text)
 async def another_command(message: types.Message):
     await bot.send_message(message.chat.id,
-                    'Проверьте введенную команду! Вышла ошибочка...')
+                           'Проверьте введенную команду! Вышла ошибочка...')
